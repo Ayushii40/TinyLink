@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS links (
+  id SERIAL PRIMARY KEY,
+  code VARCHAR(100) NOT NULL UNIQUE,
+  original_url TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  clicks INTEGER DEFAULT 0,
+  last_clicked TIMESTAMP WITH TIME ZONE
+);
+
+CREATE INDEX IF NOT EXISTS idx_links_code ON links(code);

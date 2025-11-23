@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>TinyLink — Shorten URLs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <meta name="theme-color" content="#4f46e5">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        :root {
+            color-scheme: light;
+        }
+
+        /* ---- Base layout ---- */
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0b1120;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ---- NAVBAR (Bitly-style) ---- */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+        }
+
+        .header-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0.85rem 1.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.75rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f97316, #fb7185);
+            box-shadow: 0 8px 20px rgba(248, 113, 113, 0.35);
+        }
+
+        .brand-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            color: #f9fafb;
+        }
+
+        .brand-sub {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.4rem;
+            font-size: 0.95rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #cbd5f5;
+            font-weight: 500;
+            padding: 0.25rem 0;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-login {
+            background: transparent;
+            border: none;
+            color: #e5e7eb;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0.45rem 0.75rem;
+        }
+
+        .nav-login:hover {
+            color: #ffffff;
+        }
+
+        .btn {
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            padding: 0.45rem 0.95rem;
+        }
+
+        .btn-primary {
+            background: #4f46e5;
+            border-color: #4f46e5;
+            color: #f9fafb;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.45);
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+            border-color: #4338ca;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            padding: 0.35rem 0.6rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-ghost:hover {
+            border-color: rgba(209, 213, 219, 0.9);
+        }
+
+        .nav-theme {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ---- Main card positioning ---- */
+
+        .main-card {
+            max-width: 640px;
+            margin: 4.5rem auto 4rem auto;
+            box-shadow: 0 24px 45px rgba(15, 23, 42, 0.55);
+        }
+
+        /* ---- FOOTER (Bitly-style) ---- */
+
+        .footer {
+            margin-top: auto;
+            background: #020617;
+            color: #9ca3af;
+            padding: 3rem 1.75rem 2rem;
+            border-top: 1px solid rgba(15, 23, 42, 0.7);
+        }
+
+        .footer-inner {
+            max-width: 1120px;
+            margin: 0 auto 1.75rem auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-brand-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #e5e7eb;
+            margin-bottom: 0.4rem;
+        }
+
+        .footer-brand-text {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            max-width: 260px;
+        }
+
+        .footer-col-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #e5e7eb;
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-link {
+            display: block;
+            font-size: 0.9rem;
+            color: #9ca3af;
+            text-decoration: none;
+            margin-bottom: 0.35rem;
+        }
+
+        .footer-link:hover {
+            color: #e5e7eb;
+        }
+
+        .footer-bottom {
+            max-width: 1120px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            border-top: 1px solid rgba(30, 64, 175, 0.55);
+            padding-top: 1rem;
+            font-size: 0.8rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-chip {
+            padding: 0.15rem 0.6rem;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+        }
+
+        /* ---- Responsive ---- */
+
+        @media (max-width: 900px) {
+            .header-inner {
+                gap: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header-inner {
+                padding-inline: 1rem;
+            }
+
+            .main-card {
+                margin-inline: 1rem;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* -------- DARK THEME OVERRIDES -------- */
+
+        html[data-theme="dark"] {
+            --bg: #050712;
+            --card: #0b1220;
+            --accent: #7c3aed;
+            --accent-600: #6d28d9;
+            --muted: #9ca3af;
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(180deg, #03040b, #071025);
+            color-scheme: dark;
+        }
+
+        html[data-theme="dark"] body {
+            background: linear-gradient(180deg, #03040b, #071025);
+            color: #e5e7eb;
+        }
+
+        html[data-theme="dark"] .card {
+            background: #0b1220;
+            color: #e5e7eb;
+            border-color: var(--glass-border);
+        }
+
+        html[data-theme="dark"] .logo {
+            box-shadow: 0 6px 18px rgba(248, 113, 113, 0.45);
+        }
+
+        html[data-theme="dark"] .brand-title {
+            color: #f3f4f6;
+        }
+
+        html[data-theme="dark"] .brand-sub {
+            color: #9ca3af;
+        }
+
+        html[data-theme="dark"] .input {
+            background: #111827;
+            border-color: rgba(255, 255, 255, 0.08);
+            color: #f9fafb;
+        }
+
+        html[data-theme="dark"] .input::placeholder {
+            color: #6b7280;
+        }
+
+        html[data-theme="dark"] .short {
+            background: #111827;
+            border-color: rgba(255, 255, 255, 0.08);
+            color: #e5e7eb;
+        }
+
+        html[data-theme="dark"] .btn-ghost {
+            color: #e5e7eb;
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        html[data-theme="dark"] .btn-copy {
+            background: #1f2937;
+            border-color: rgba(255, 255, 255, 0.08);
+            color: #e5e7eb;
+        }
+
+        html[data-theme="dark"] .error {
+            color: #f87171;
+        }
+
+        html[data-theme="dark"] .footer {
+            background: #020617;
+            color: #9ca3af;
+        }
+
+        html[data-theme="dark"] .nav-link {
+            color: #e5e7eb;
+        }
+
+        html[data-theme="dark"] .nav-login {
+            color: #e5e7eb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- NAVBAR -->
+        <header class="header">
+            <div class="header-inner">
+                <a href="#" class="brand">
+                    <div class="logo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="3" width="18" height="18" rx="5" fill="white" opacity="0.12" />
+                            <path d="M7 6h10v2h-4v10h-2V8H7V6z" fill="white" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="brand-title">TinyLink</div>
+                        <div class="brand-sub">Build stronger digital connections</div>
+                    </div>
+                </a>
+
+                <nav class="nav-links">
+                    <a href="#" class="nav-link">Product</a>
+                    <a href="#" class="nav-link">Solutions</a>
+                    <a href="#" class="nav-link">Pricing</a>
+                    <a href="#" class="nav-link">Resources</a>
+                </nav>
+
+                <div class="nav-actions">
+                    <button class="nav-login" type="button">Log in</button>
+
+                    <button id="theme-toggle" class="btn btn-ghost nav-theme" aria-pressed="false">
+                        <span id="theme-icon">🌙</span>
+                    </button>
+
+                    <button type="button" class="btn btn-primary">
+                        Sign up free
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN CARD (unchanged content, only added main-card class) -->
+        <main class="card main-card">
+            <h1 class="h1">Shorten your link</h1>
+            <p class="lead">Paste a long URL and create a short, shareable link.</p>
+
+            <form id="shorten-form" class="form-grid" autocomplete="off">
+                <input id="url-input" name="url" class="input" type="url"
+                    placeholder="https://example.com/very/long/path" />
+                <div class="row">
+                    <input id="custom-input" name="custom" class="input input--small" type="text"
+                        placeholder="Custom (optional)" />
+                    <button id="shorten-btn" type="submit" class="btn btn-primary">Shorten</button>
+                </div>
+            </form>
+
+            <div id="result" class="result" style="display:none;">
+                <div id="short-url" class="short"></div>
+                <button id="copy-btn" class="btn btn-ghost btn-copy">Copy</button>
+                <a id="open-btn" class="btn btn-primary" target="_blank" rel="noopener">Open</a>
+            </div>
+
+            <div id="error" class="error" style="display:none;"></div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-inner">
+                <div>
+                    <div class="footer-brand-title">TinyLink</div>
+                    <div class="footer-brand-text">
+                        All the tools you need to turn long, messy URLs into clean, trackable short links.
+                    </div>
+                </div>
+
+                <div>
+                    <div class="footer-col-title">Product</div>
+                    <a href="#" class="footer-link">URL Shortener</a>
+                    <a href="#" class="footer-link">Custom back-halves</a>
+                    <a href="#" class="footer-link">Link analytics</a>
+                </div>
+
+                <div>
+                    <div class="footer-col-title">Solutions</div>
+                    <a href="#" class="footer-link">Marketing</a>
+                    <a href="#" class="footer-link">Social media</a>
+                    <a href="#" class="footer-link">Startups</a>
+                </div>
+
+                <div>
+                    <div class="footer-col-title">Company</div>
+                    <a href="#" class="footer-link">About</a>
+                    <a href="#" class="footer-link">Blog</a>
+                    <a href="#" class="footer-link">Support</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <span>© 2025 TinyLink. All rights reserved.</span>
+                <div class="footer-bottom-links">
+                    <span class="footer-chip">Free plan · 5 links / month</span>
+                    <a href="#" class="footer-link">Privacy</a>
+                    <a href="#" class="footer-link">Terms</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
