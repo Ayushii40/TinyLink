@@ -1,3 +1,4 @@
+require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const helmet = require("helmet");
@@ -5,7 +6,6 @@ const rateLimit = require("express-rate-limit");
 const cors = require("cors");
 const validator = require("validator");
 const db = require("./db");
-require("dotenv").config();
 
 const app = express();
 app.use(helmet());
