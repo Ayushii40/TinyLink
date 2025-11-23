@@ -1,4 +1,4 @@
-const API = "http://localhost:4000";
+const API = "https://tinylink-1-wx6k.onrender.com";
 
 
 const form = document.getElementById("shorten-form");
