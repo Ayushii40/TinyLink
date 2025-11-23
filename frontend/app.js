@@ -1,4 +1,4 @@
-const API = "https://tinylink-jqql.onrender.com";
+const API = "https://tinylink-f3ju.onrender.com";
 
 
 const form = document.getElementById("shorten-form");
